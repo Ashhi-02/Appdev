@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        #display {
+            width: 15vw;
+        }
+        td * {
+            width: 5vw;
+            height: 5vw;
+        }
+    </style>
+</head>
+<body>
+<center>
+    <table border="2">
+        <tr>
+            <td colspan="3">
+                <input type="text" name="display" id="display" class="field">
+            </td>
+            <td>
+                <button onclick="clearDisplay()">C</button> <!--clear-->
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button onclick="getNumber(7)">7</button>
+            </td>
+            <td>
+                <button onclick="getNumber(8)">8</button>
+            </td>
+            <td>
+                <button onclick="getNumber(9)">9</button>
+            </td>
+            <td>
+                <button onclick="getOperator('/')">/</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button onclick="getNumber(4)">4</button>
+            </td>
+            <td>
+                <button onclick="getNumber(5)">5</button>
+            </td>
+            <td>
+                <button onclick="getNumber(6)">6</button>
+            </td>
+            <td>
+                <button onclick="getOperator('*')">*</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button onclick="getNumber(1)">1</button>
+            </td>
+            <td>
+                <button onclick="getNumber(2)">2</button>
+            </td>
+            <td>
+                <button onclick="getNumber(3)">3</button>
+            </td>
+            <td>
+                <button onclick="getOperator('-')">-</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button onclick="getNumber(0)">0</button>
+            </td>
+            <td>
+                <button onclick="getNumber('.')">.</button>
+            </td>
+            <td>
+                <button onclick="calculateEquals()">=</button>
+            </td>
+            <td>
+                <button onclick="getOperator('+')">+</button>
+            </td>
+        </tr>
+    </table>
+
+    <script>
+        let firstNum  = null;
+        let secondNum  = null;
+        let step = 0;
+        let operation = null;
+        let result = null;
+
+        let numArray = [];
+        let secontNumArray = [];
+
+        let display = document.getElementById('display');
+
+        function getNumber(num) {
+            if (step === 0 || step === 1) {
+                numArray.push(num);
+                step = 1;
+                firstNum = Number(numArray.join(''));
+                display.value = firstNum;
+            } else if (step === 2) {
+                secontNumArray.push(num);
+                secondNum = Number(secontNumArray.join(''));
+                display.value = secondNum;
+            }
+        }
+
+        function getOperator(op) {
+            if (firstNum !== null) {
+                step = 2;
+                operation = op;
+            } else {
+                alert("Error: No first number");
+            }
+        }
+
+        function clearDisplay() {
+            display.value = 0;
+            firstNum  = null;
+            secondNum = null;
+            step = 0;
+            operation = null;
+            result = null;
+            numArray = [];
+            secontNumArray = [];
+        }
+
+        const calculateEquals = () => {
+            if (operation === null) {
+                alert("Error: No operator selected");
+                return;
+            }
+
+            if (secondNum === null) {
+                if (result !== null) {
+                    secondNum = firstNum;
+                } else {
+                    alert("Error: No second number");
+                    return;
+                }
+            }
+
+            if (operation === '+') {
+                result = firstNum + secondNum;
+            } else if (operation === '-') {
+                result = firstNum - secondNum;
+            } else if (operation === '*') {
+                result = firstNum * secondNum;
+            } else if (operation === '/') {
+                if (secondNum === 0) {
+                    alert("Error: Division by zero");
+                    return;
+                }
+                result = firstNum / secondNum;
+            }
+
+            display.value = result;
+            firstNum = result;
+            secondNum;
+            secontNumArray = [];
+        }
+    </script>
+</center>
+</body>
+</html>
